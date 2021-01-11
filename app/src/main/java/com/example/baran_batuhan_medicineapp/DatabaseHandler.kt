@@ -6,6 +6,7 @@ import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteException
 import android.database.sqlite.SQLiteOpenHelper
+import android.util.Log
 import android.widget.Toast
 
 class DBHelper(val context: Context) : SQLiteOpenHelper(context,DBHelper.DATABASE_NAME,null,DBHelper.DATABASE_VERSION) {
@@ -71,12 +72,31 @@ class DBHelper(val context: Context) : SQLiteOpenHelper(context,DBHelper.DATABAS
                 description = cursor.getString(cursor.getColumnIndex(COL_DESCRIPTION))
 
 
-                val emp = Medicine(name = name,amount = amount,description = description)
+                val emp = Medicine(id = id,name = name,amount = amount,description = description)
                 empList.add(emp)
 
             } while (cursor.moveToNext())
         }
         return empList
+    }
+
+
+    fun deleteMedicine(medicine: Medicine) {
+        val db = this.writableDatabase
+        var values = ContentValues()
+        values.put("id", medicine.id)
+        values.put("name", medicine.name)
+        values.put("amount", medicine.amount)
+        values.put("description", medicine.description)
+        println(values)
+        val retVal = db.delete("Medicine", "id = " + medicine.id, null)
+        if (retVal >= 1) {
+            Log.v("@@@WWe", " Record deleted")
+        } else {
+            Log.v("@@@WWe", " Not deleted")
+        }
+        db.close()
+
     }
 
     fun deleteAllData(){

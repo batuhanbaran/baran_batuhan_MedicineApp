@@ -1,11 +1,11 @@
 package com.example.baran_batuhan_medicineapp
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -59,7 +59,6 @@ class MainActivity : AppCompatActivity() {
 
             val intent = Intent(this,AddNewMedicine::class.java)
              startActivity(intent)
-
 
             true
         }

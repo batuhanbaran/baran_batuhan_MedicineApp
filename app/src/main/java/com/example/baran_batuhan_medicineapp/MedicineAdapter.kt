@@ -1,10 +1,12 @@
 package com.example.baran_batuhan_medicineapp
 
+import android.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 
 class MedicineAdapter(
@@ -69,13 +71,44 @@ class MedicineAdapter(
 
         holder.deleteButton.setOnClickListener {
 
-            println("delete")
+
+            val mAlertDialog = AlertDialog.Builder(holder.itemView.context)
+
+            mAlertDialog.setTitle("Are you sure you want to this record!") //set alertdialog title
+
+            mAlertDialog.setPositiveButton("Yes") { dialog, id ->
+
+
+                val databaseHandler: DBHelper = DBHelper(holder.itemView.context)
+                val removedMed = Medicine(id = medicine.id,name = medicine.name,amount = medicine.amount,description = medicine.description)
+                databaseHandler.deleteMedicine(removedMed)
+
+                notifyDataSetChanged()
+                dialog.dismiss()
+                //medicineList.removeAt(position)
+                //notifyItemRemoved(position)
+                //notifyDataSetChanged()
+
+            }
+
+
+            mAlertDialog.setNegativeButton("No") { dialog, id ->
+
+
+            }
+
+            mAlertDialog.show()
 
         }
 
         holder.editButton.setOnClickListener {
 
-            println("edit")
+            val dialog = UpdateMedicine(medicine)
+            val manager = (holder.itemView.context as MainActivity).supportFragmentManager
+
+            dialog.show(manager,"")
+
+
         }
     }
 
