@@ -1,10 +1,11 @@
 package com.example.baran_batuhan_medicineapp
 
+import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import androidx.appcompat.app.AppCompatActivity
 
 class AddNewMedicine : AppCompatActivity() {
 
@@ -20,6 +21,7 @@ class AddNewMedicine : AppCompatActivity() {
         val context = this
         val db = DBHelper(context)
 
+
         saveButton.setOnClickListener {
 
             db.insertData(Medicine(name = name.text.toString(),amount = amount.text.toString(),description = description.text.toString()))
@@ -28,4 +30,5 @@ class AddNewMedicine : AppCompatActivity() {
             startActivity(intent)
         }
     }
+
 }

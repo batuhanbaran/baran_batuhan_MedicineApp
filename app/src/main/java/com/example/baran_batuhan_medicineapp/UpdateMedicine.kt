@@ -1,6 +1,7 @@
 package com.example.baran_batuhan_medicineapp
 
 import android.app.Dialog
+import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.widget.Button
@@ -10,9 +11,11 @@ import androidx.fragment.app.DialogFragment
 import kotlinx.android.synthetic.main.dialog_update_medicine.*
 
 
-class UpdateMedicine(med: Medicine): DialogFragment() {
+class UpdateMedicine(med: Medicine, mainActivity: MainActivity): DialogFragment() {
 
     var willUpdateMedicine = med
+
+    var mainActivity = mainActivity
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
 
@@ -30,12 +33,40 @@ class UpdateMedicine(med: Medicine): DialogFragment() {
 
         builder.setView(dialogView)
 
-        name.text = willUpdateMedicine.name.toEditable()
-        amount.text = willUpdateMedicine.amount.toEditable()
-        description.text = willUpdateMedicine.description.toEditable()
+        name.setText(willUpdateMedicine.name)
+        amount.setText(willUpdateMedicine.amount)
+        description.setText(willUpdateMedicine.description)
 
+        updateButton.setOnClickListener {
+
+            val context = this.context
+            val db = DBHelper(context!!)
+
+            val newName = name.text.toString()
+            val newAmount = amount.text.toString()
+            val newDescripton = description.text.toString()
+
+
+            val updatedMedicine = Medicine()
+
+            updatedMedicine.id = willUpdateMedicine.id
+            updatedMedicine.name = newName
+            updatedMedicine.amount = newAmount
+            updatedMedicine.description = newDescripton
+
+
+            db.updateMedicine(updatedMedicine)
+
+            dismiss()
+
+            mainActivity.getDataFromDb()
+        }
+
+        cancelButton.setOnClickListener {
+
+            dismiss()
+        }
 
         return builder.create()
     }
-    fun String.toEditable(): Editable =  Editable.Factory.getInstance().newEditable(this)
 }

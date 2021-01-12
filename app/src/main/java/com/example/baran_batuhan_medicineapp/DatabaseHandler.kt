@@ -41,7 +41,7 @@ class DBHelper(val context: Context) : SQLiteOpenHelper(context,DBHelper.DATABAS
     }
 
     fun readData():ArrayList<Medicine>{
-        val empList: ArrayList<Medicine> = ArrayList<Medicine>()
+        val medList: ArrayList<Medicine> = ArrayList<Medicine>()
 
         // Query to select all the records from the table.
         val selectQuery = "SELECT  * FROM $TABLE_NAME"
@@ -72,24 +72,43 @@ class DBHelper(val context: Context) : SQLiteOpenHelper(context,DBHelper.DATABAS
                 description = cursor.getString(cursor.getColumnIndex(COL_DESCRIPTION))
 
 
-                val emp = Medicine(id = id,name = name,amount = amount,description = description)
-                empList.add(emp)
+                val med = Medicine(id = id,name = name,amount = amount,description = description)
+                medList.add(med)
 
             } while (cursor.moveToNext())
         }
-        return empList
+        return medList
+    }
+
+    fun updateMedicine(med: Medicine) {
+        val db = this.writableDatabase
+        val query = "SELECT * FROM $TABLE_NAME"
+        val result = db.rawQuery(query,null)
+
+        if(result.moveToFirst()){
+            do {
+                val cv = ContentValues()
+                cv.put(COL_NAME,med.name)
+                cv.put(COL_AMOUNT,med.amount)
+                cv.put(COL_DESCRIPTION,med.description)
+                db.update(TABLE_NAME,cv, COL_ID + "=" + med.id, null)
+            }while (result.moveToNext())
+        }
+
+        result.close()
+        db.close()
     }
 
 
-    fun deleteMedicine(medicine: Medicine) {
+    fun deleteMedicine(med: Medicine) {
         val db = this.writableDatabase
         var values = ContentValues()
-        values.put("id", medicine.id)
-        values.put("name", medicine.name)
-        values.put("amount", medicine.amount)
-        values.put("description", medicine.description)
+        values.put("id", med.id)
+        values.put("name", med.name)
+        values.put("amount", med.amount)
+        values.put("description", med.description)
         println(values)
-        val retVal = db.delete("Medicine", "id = " + medicine.id, null)
+        val retVal = db.delete("Medicine", "id = " + med.id, null)
         if (retVal >= 1) {
             Log.v("@@@WWe", " Record deleted")
         } else {

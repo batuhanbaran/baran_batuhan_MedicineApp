@@ -55,6 +55,7 @@ class MedicineAdapter(
 
             //view.context.startActivity(intentToCarPager)
 
+
         }
 
     }
@@ -85,15 +86,13 @@ class MedicineAdapter(
 
                 notifyDataSetChanged()
                 dialog.dismiss()
-                //medicineList.removeAt(position)
-                //notifyItemRemoved(position)
-                //notifyDataSetChanged()
+                medicineList.removeAt(position)
+                notifyItemRemoved(position)
 
             }
 
 
             mAlertDialog.setNegativeButton("No") { dialog, id ->
-
 
             }
 
@@ -103,7 +102,7 @@ class MedicineAdapter(
 
         holder.editButton.setOnClickListener {
 
-            val dialog = UpdateMedicine(medicine)
+            val dialog = UpdateMedicine(medicine,mainActivity)
             val manager = (holder.itemView.context as MainActivity).supportFragmentManager
 
             dialog.show(manager,"")
