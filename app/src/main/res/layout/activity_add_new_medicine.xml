@@ -55,5 +55,14 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="25sp"
             android:text="SAVE" />
+
+        <Button
+            android:id="@+id/backBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20sp"
+            android:text="BACK"
+            app:backgroundTint="#000000" />
+
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

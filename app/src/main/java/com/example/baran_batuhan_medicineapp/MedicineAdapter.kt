@@ -1,12 +1,15 @@
 package com.example.baran_batuhan_medicineapp
 
 import android.app.AlertDialog
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 
 class MedicineAdapter(
@@ -41,11 +44,15 @@ class MedicineAdapter(
 
         internal var editButton = view.findViewById<ImageButton>(R.id.editBtn)
 
+        internal var card = view.findViewById<CardView>(R.id.cardView)
+
         init {
+
             view.isClickable = true
             view.setOnClickListener(this)
             deleteButton.setOnClickListener(this)
             editButton.setOnClickListener(this)
+
         }
 
 
@@ -109,6 +116,17 @@ class MedicineAdapter(
 
 
         }
+
+        if (!medicine.flag){
+
+            holder.card.setCardBackgroundColor(Color.rgb(255,0,0))
+
+        }else{
+
+            holder.card.setCardBackgroundColor(Color.rgb(0,153,76))
+
+        }
+
     }
 
     override fun getItemCount(): Int {

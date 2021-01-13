@@ -22,6 +22,10 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
 
+        val context = this
+        //context.deleteDatabase("Medicine Database")
+
+
         getDataFromDb()
     }
 

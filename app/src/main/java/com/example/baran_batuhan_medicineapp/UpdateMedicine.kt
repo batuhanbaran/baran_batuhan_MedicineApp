@@ -5,6 +5,7 @@ import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.widget.Button
+import android.widget.CheckBox
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
@@ -28,14 +29,23 @@ class UpdateMedicine(med: Medicine, mainActivity: MainActivity): DialogFragment(
         val name = dialogView.findViewById<EditText>(R.id.updateName)
         val amount = dialogView.findViewById<EditText>(R.id.updateAmount)
         val description = dialogView.findViewById<EditText>(R.id.updateDescription)
-        val cancelButton= dialogView.findViewById<Button>(R.id.cancelButton)
-        val updateButton= dialogView.findViewById<Button>(R.id.updateButton)
+        val myCheckBox = dialogView.findViewById<CheckBox>(R.id.statusCheckBox)
+        val cancelButton = dialogView.findViewById<Button>(R.id.cancelButton)
+        val updateButton = dialogView.findViewById<Button>(R.id.updateButton)
 
         builder.setView(dialogView)
 
         name.setText(willUpdateMedicine.name)
         amount.setText(willUpdateMedicine.amount)
         description.setText(willUpdateMedicine.description)
+
+        if (willUpdateMedicine.flag){
+
+            myCheckBox.isChecked = true
+        }else{
+
+            myCheckBox.isChecked = false
+        }
 
         updateButton.setOnClickListener {
 
@@ -54,12 +64,21 @@ class UpdateMedicine(med: Medicine, mainActivity: MainActivity): DialogFragment(
             updatedMedicine.amount = newAmount
             updatedMedicine.description = newDescripton
 
+            if (myCheckBox.isChecked){
+
+                updatedMedicine.flag = true
+
+            }else{
+
+                updatedMedicine.flag = false
+            }
 
             db.updateMedicine(updatedMedicine)
 
+            mainActivity.getDataFromDb()
             dismiss()
 
-            mainActivity.getDataFromDb()
+
         }
 
         cancelButton.setOnClickListener {
