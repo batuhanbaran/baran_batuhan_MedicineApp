@@ -5,7 +5,9 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -16,17 +18,14 @@ class MainActivity : AppCompatActivity() {
     private var medicineList : ArrayList<Medicine> = arrayListOf()
     private var recyclerView: RecyclerView? = null
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-
         val context = this
         //context.deleteDatabase("Medicine Database")
 
-
-        getDataFromDb()
+        isDatabaseEmpty()
     }
 
 
@@ -69,10 +68,22 @@ class MainActivity : AppCompatActivity() {
         else -> super.onOptionsItemSelected(item)
     }
 
-    override fun onResume() {
-        super.onResume()
+     fun isDatabaseEmpty(){
 
-        getDataFromDb()
+         val context = this
+         val db = DBHelper(context)
+         val dbControl = findViewById<TextView>(R.id.isDbEmpty)
+
+         if (db.readData().isEmpty()){
+
+             dbControl.isVisible = true
+
+         }else{
+
+             dbControl.isVisible = false
+             getDataFromDb()
+         }
     }
+
 
 }

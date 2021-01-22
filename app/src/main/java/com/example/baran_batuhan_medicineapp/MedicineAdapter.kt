@@ -10,6 +10,7 @@ import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.cardview.widget.CardView
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 
 class MedicineAdapter(
@@ -45,6 +46,8 @@ class MedicineAdapter(
         internal var editButton = view.findViewById<ImageButton>(R.id.editBtn)
 
         internal var card = view.findViewById<CardView>(R.id.cardView)
+
+        internal var dbControl = view.findViewById<TextView>(R.id.isDbEmpty)
 
         init {
 
@@ -96,6 +99,7 @@ class MedicineAdapter(
                 medicineList.removeAt(position)
                 notifyItemRemoved(position)
 
+                mainActivity.isDatabaseEmpty()
             }
 
 

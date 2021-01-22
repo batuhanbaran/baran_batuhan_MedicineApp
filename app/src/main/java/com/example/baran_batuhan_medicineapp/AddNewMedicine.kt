@@ -1,5 +1,6 @@
 package com.example.baran_batuhan_medicineapp
 
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -25,10 +26,31 @@ class AddNewMedicine : AppCompatActivity() {
 
         saveButton.setOnClickListener {
 
-            db.insertData(Medicine(name = name.text.toString(),amount = amount.text.toString(),description = description.text.toString(), flag = false))
+            if (name.text.toString() != "" && amount.text.toString() != "" && description.text.toString() != ""){
 
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
+                db.insertData(Medicine(name = name.text.toString(),amount = amount.text.toString(),description = description.text.toString(), flag = false))
+
+                val intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
+
+            }else{
+
+                val mAlertDialog = AlertDialog.Builder(context)
+
+                mAlertDialog.setTitle("Warning!")
+                mAlertDialog.setMessage("Please fill in all fields.") //set alertdialog title
+
+
+                mAlertDialog.setNegativeButton("OK") { dialog, id ->
+
+
+                }
+
+                mAlertDialog.show()
+
+            }
+
+
         }
 
         backBButton.setOnClickListener {
