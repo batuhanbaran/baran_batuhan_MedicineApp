@@ -22,9 +22,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val context = this
-        //context.deleteDatabase("Medicine Database")
 
+        //func for dbControl texts
         isDatabaseEmpty()
     }
 
@@ -36,6 +35,8 @@ class MainActivity : AppCompatActivity() {
 
         recyclerView = findViewById<View>(R.id.recyclerView) as RecyclerView
 
+
+        //content of recylerview shown with returned data from DatabaseHandler class!
         adapter = MedicineAdapter(this, db.readData())
 
 
@@ -60,6 +61,8 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
         R.id.addBtn -> {
 
+
+            //add button
             val intent = Intent(this,AddNewMedicine::class.java)
              startActivity(intent)
 
@@ -79,6 +82,8 @@ class MainActivity : AppCompatActivity() {
              dbControl.isVisible = true
 
          }else{
+
+             //get data from db if it is available
 
              dbControl.isVisible = false
              getDataFromDb()

@@ -17,11 +17,12 @@ class DBHelper(val context: Context) : SQLiteOpenHelper(context,DBHelper.DATABAS
     private val COL_DESCRIPTION = "description"
     private val COL_FLAG = "flag"
     companion object {
-        private val DATABASE_NAME = "Medicine Database"//database adı
+        private val DATABASE_NAME = "Medicine Database"//database name
         private val DATABASE_VERSION = 1
     }
 
     override fun onCreate(db: SQLiteDatabase?) {
+
         val createTable = "CREATE TABLE $TABLE_NAME ($COL_ID INTEGER PRIMARY KEY AUTOINCREMENT, $COL_NAME  VARCHAR(256),$COL_AMOUNT  VARCHAR(256),$COL_DESCRIPTION  VARCHAR(256), $COL_FLAG INTEGER)"
         db?.execSQL(createTable)
     }
@@ -42,9 +43,9 @@ class DBHelper(val context: Context) : SQLiteOpenHelper(context,DBHelper.DATABAS
         }
 
 
+        //insert new data
         val result = sqliteDB.insert(TABLE_NAME,null,contentValues)
 
-        Toast.makeText(context,if(result != -1L) "Kayıt Başarılı" else "Kayıt yapılamadı.", Toast.LENGTH_SHORT).show()
     }
 
     fun readData():ArrayList<Medicine>{
@@ -82,6 +83,7 @@ class DBHelper(val context: Context) : SQLiteOpenHelper(context,DBHelper.DATABAS
 
                 if (flag == 0){
 
+                    //0 means flag is false otherwise true
                     val med = Medicine(id = id,name = name,amount = amount,description = description, flag = false)
                     medList.add(med)
 
@@ -90,7 +92,6 @@ class DBHelper(val context: Context) : SQLiteOpenHelper(context,DBHelper.DATABAS
                     val med = Medicine(id = id,name = name,amount = amount,description = description, flag = true)
                     medList.add(med)
                 }
-
 
 
             } while (cursor.moveToNext())
@@ -106,6 +107,7 @@ class DBHelper(val context: Context) : SQLiteOpenHelper(context,DBHelper.DATABAS
         if(result.moveToFirst()){
             do {
                 val cv = ContentValues()
+                //putting passed new values
                 cv.put(COL_NAME,med.name)
                 cv.put(COL_AMOUNT,med.amount)
                 cv.put(COL_DESCRIPTION,med.description)
@@ -118,6 +120,7 @@ class DBHelper(val context: Context) : SQLiteOpenHelper(context,DBHelper.DATABAS
                     cv.put(COL_FLAG,0)
                 }
 
+                //update by id
                 db.update(TABLE_NAME,cv, COL_ID + "=" + med.id, null)
             }while (result.moveToNext())
         }
@@ -134,7 +137,8 @@ class DBHelper(val context: Context) : SQLiteOpenHelper(context,DBHelper.DATABAS
         values.put("name", med.name)
         values.put("amount", med.amount)
         values.put("description", med.description)
-        println(values)
+
+        //delete by id
         val retVal = db.delete("Medicine", "id = " + med.id, null)
         if (retVal >= 1) {
             Log.v("@@@WWe", " Record deleted")
@@ -142,13 +146,6 @@ class DBHelper(val context: Context) : SQLiteOpenHelper(context,DBHelper.DATABAS
             Log.v("@@@WWe", " Not deleted")
         }
         db.close()
-
-    }
-
-    fun deleteAllData(){
-        val sqliteDB = this.writableDatabase
-        sqliteDB.delete(TABLE_NAME,null,null)
-        sqliteDB.close()
 
     }
 

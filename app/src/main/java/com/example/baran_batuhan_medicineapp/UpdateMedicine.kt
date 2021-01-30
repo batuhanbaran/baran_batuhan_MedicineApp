@@ -26,6 +26,8 @@ class UpdateMedicine(med: Medicine, mainActivity: MainActivity): DialogFragment(
 
         val dialogView = inflater.inflate(R.layout.dialog_update_medicine, null)
 
+
+        //getting ui items!
         val name = dialogView.findViewById<EditText>(R.id.updateName)
         val amount = dialogView.findViewById<EditText>(R.id.updateAmount)
         val description = dialogView.findViewById<EditText>(R.id.updateDescription)
@@ -35,13 +37,18 @@ class UpdateMedicine(med: Medicine, mainActivity: MainActivity): DialogFragment(
 
         builder.setView(dialogView)
 
+
+        //filling empty fields with data
         name.setText(willUpdateMedicine.name)
         amount.setText(willUpdateMedicine.amount)
         description.setText(willUpdateMedicine.description)
 
+
+        //checkbox controle
         if (willUpdateMedicine.flag){
 
             myCheckBox.isChecked = true
+
         }else{
 
             myCheckBox.isChecked = false
@@ -49,34 +56,58 @@ class UpdateMedicine(med: Medicine, mainActivity: MainActivity): DialogFragment(
 
         updateButton.setOnClickListener {
 
-            val context = this.context
-            val db = DBHelper(context!!)
 
-            val newName = name.text.toString()
-            val newAmount = amount.text.toString()
-            val newDescripton = description.text.toString()
+            //condition for empty fields medicene data should not be empty!
+            if (name.text.toString() == "" || amount.text.toString() == "" || description.text.toString() == ""){
+
+                val mAlertDialog = android.app.AlertDialog.Builder(context)
+
+                mAlertDialog.setTitle("Warning!")
+                mAlertDialog.setMessage("Please fill in all fields.") //set alertdialog title
 
 
-            val updatedMedicine = Medicine()
+                mAlertDialog.setNegativeButton("OK") { dialog, id ->
 
-            updatedMedicine.id = willUpdateMedicine.id
-            updatedMedicine.name = newName
-            updatedMedicine.amount = newAmount
-            updatedMedicine.description = newDescripton
 
-            if (myCheckBox.isChecked){
+                }
 
-                updatedMedicine.flag = true
+                mAlertDialog.show()
 
             }else{
 
-                updatedMedicine.flag = false
+                //if fields are not empty then update data with new values!
+
+                val context = this.context
+                val db = DBHelper(context!!)
+
+                val newName = name.text.toString()
+                val newAmount = amount.text.toString()
+                val newDescripton = description.text.toString()
+
+
+                val updatedMedicine = Medicine()
+
+                updatedMedicine.id = willUpdateMedicine.id
+                updatedMedicine.name = newName
+                updatedMedicine.amount = newAmount
+                updatedMedicine.description = newDescripton
+
+                if (myCheckBox.isChecked){
+
+                    updatedMedicine.flag = true
+
+                }else{
+
+                    updatedMedicine.flag = false
+                }
+
+
+                //call update method and pass new object to it.
+                db.updateMedicine(updatedMedicine)
+
+                mainActivity.getDataFromDb()
+                dismiss()
             }
-
-            db.updateMedicine(updatedMedicine)
-
-            mainActivity.getDataFromDb()
-            dismiss()
 
 
         }

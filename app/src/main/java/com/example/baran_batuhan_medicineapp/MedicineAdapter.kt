@@ -61,9 +61,6 @@ class MedicineAdapter(
 
         override fun onClick(view: View) {
 
-            //val intentToCarPager = Intent(view!!.context, CarPagerActivity::class.java)
-
-            //view.context.startActivity(intentToCarPager)
 
 
         }
@@ -83,6 +80,8 @@ class MedicineAdapter(
         holder.deleteButton.setOnClickListener {
 
 
+            //message before deleting data at choosen position
+
             val mAlertDialog = AlertDialog.Builder(holder.itemView.context)
 
             mAlertDialog.setTitle("Are you sure you want to this record!") //set alertdialog title
@@ -94,6 +93,8 @@ class MedicineAdapter(
                 val removedMed = Medicine(id = medicine.id,name = medicine.name,amount = medicine.amount,description = medicine.description)
                 databaseHandler.deleteMedicine(removedMed)
 
+
+                //recylerview notifying
                 notifyDataSetChanged()
                 dialog.dismiss()
                 medicineList.removeAt(position)
@@ -113,6 +114,8 @@ class MedicineAdapter(
 
         holder.editButton.setOnClickListener {
 
+
+            //showing edit page as dialog
             val dialog = UpdateMedicine(medicine,mainActivity)
             val manager = (holder.itemView.context as MainActivity).supportFragmentManager
 
@@ -120,6 +123,9 @@ class MedicineAdapter(
 
 
         }
+
+
+        //changing carBackground color according to flag.
 
         if (!medicine.flag){
 
